@@ -27,7 +27,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	{ "Gimp",     NULL,       NULL,       0,            0,           -1 },
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 };
 
@@ -58,12 +58,14 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-static const char *termcmd[]  = { "tilix", NULL };
-static const char *waterfox[] = { "/home/korv/apps/waterfox/bin/waterfox", NULL };
-static const char *statusbar[] = { "./../dwmbar/dwmbar.sh", NULL };
-static const char *upvol[]      = { "/bin/sh/wpctl",   "set-volume", "51",      "0.05+",      NULL };
-static const char *downvol[]    = { "/bin/sh/wpctl",   "set-volume", "51",      "0.05-",      NULL };
-static const char *mutevol[]    = { "/bin/sh/wpctl",   "set-mute",   "51",      "toggle",   NULL };
+static const char *termcmd[]  = { "tilix", "--new-process", NULL };
+static const char *waterfox[] = { "env", "GTK_THEME=Adwaita-dark", "/home/korv/apps/waterfox/bin/waterfox", NULL };
+static const char *statusbar[] = { "/home/korv/dwm/dwmbar.sh", NULL };
+static const char *upvol[] = { "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05+", NULL };
+static const char *downvol[] = { "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05-",NULL};
+static const char *mutevol[] = { "wpctl", "set-mute", "@DEFAULT_SINK@","toggle", NULL };
+static const char *files[]  = { "env", "GTK_THEME=Adwaita-dark", "nautilus", NULL };
+static const char *defapps[]  = { "/home/korv/scripts/dwmdefault.sh", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -81,15 +83,16 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_t,      spawn,          {.v = statusbar } },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_p,  setlayout,      {0} },
+  { MODKEY,                       XK_f,      spawn,          {.v = files } },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY|ShiftMask,             XK_f,  setlayout,      {0} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = +1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_period, focusmon,       {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = -1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
@@ -101,10 +104,14 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-  { MODKEY,                       XK_w,      spawn,          {.v = waterfox } },
+  { MODKEY,                       XK_e,      spawn,          {.v = waterfox } },
+  { MODKEY|Mod1Mask,              XK_space,  spawn,          {.v = defapps } },
   { MODKEY,                       XK_F2,     spawn,          {.v = downvol } },
-  { MODKEY,                       XK_F4,     spawn,          {.v = mutevol } },
+  { MODKEY,                       XK_p,      spawn,          {.v = mutevol } },
   { MODKEY,                       XK_F3,     spawn,          {.v = upvol   } },
+  { 0,                       XF86XK_AudioLowerVolume, spawn, {.v = downvol } },
+  { 0,                       XF86XK_AudioMute, spawn,        {.v = mutevol } },
+  { 0,                       XF86XK_AudioRaiseVolume, spawn, {.v = upvol   } },
 };
 
 /* button definitions */

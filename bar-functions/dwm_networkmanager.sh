@@ -18,7 +18,7 @@ dwm_networkmanager () {
         export __DWM_BAR_NETWORKMANAGER__="${SEP1}🌐 ${CONNAME} ${PRIVATE} ${PUBLIC}${SEP2}"
     else
 #        export __DWM_BAR_NETWORKMANAGER__="${SEP1}NET ${CONNAME} ${PRIVATE} ${PUBLIC}${SEP2}"
-        export __DWM_BAR_NETWORKMANAGER__="${SEP1}${CONNAME} | ${PUBLIC}${SEP2}"
+        export __DWM_BAR_NETWORKMANAGER__="${SEP1}${CONNAME} ${PUBLIC}${SEP2}"
     fi
 }
 

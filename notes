@@ -1,0 +1,7 @@
+eval $(gnome-keyring-daemon --start)
+export SSH_AUTH_LOCK
+exec dbus-launch dwm
+
+||
+
+gnome-keyring-daemon --start --components=pkcs11 &

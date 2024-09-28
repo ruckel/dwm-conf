@@ -42,6 +42,7 @@ static const Layout layouts[] = {
 	{ "[]=",      tile },    /* first entry is default */
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
+  { "[][]=",    tilewide },
 };
 
 /* key definitions */
@@ -60,17 +61,19 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "tilix", "--new-process", NULL };
 static const char *waterfox[] = { "env", "GTK_THEME=Adwaita-dark", "/home/korv/apps/waterfox/bin/waterfox", NULL };
-static const char *statusbar[] = { "/home/korv/dwm/dwmbar.sh", NULL };
+static const char *statusbar[] = { "./dwmbar.sh", NULL };
 static const char *upvol[] = { "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05+", NULL };
 static const char *downvol[] = { "wpctl", "set-volume", "@DEFAULT_SINK@", "0.05-",NULL};
 static const char *mutevol[] = { "wpctl", "set-mute", "@DEFAULT_SINK@","toggle", NULL };
 static const char *files[]  = { "env", "GTK_THEME=Adwaita-dark", "nautilus", NULL };
 static const char *defapps[]  = { "/home/korv/scripts/dwmdefault.sh", NULL };
+static const char *utilapps[]  = { "/home/korv/scripts/dwmutils.sh", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_z,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -87,6 +90,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,  setlayout,      {0} },
   { MODKEY,                       XK_f,      spawn,          {.v = files } },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+  { MODKEY|ShiftMask,             XK_w,      setlayout,      {.v = &layouts[3]} },
 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
@@ -104,8 +108,9 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-  { MODKEY,                       XK_e,      spawn,          {.v = waterfox } },
+  { MODKEY|ShiftMask,             XK_w,      spawn,          {.v = waterfox } }, //       waterfox
   { MODKEY|Mod1Mask,              XK_space,  spawn,          {.v = defapps } },
+  { ControlMask|Mod1Mask,         XK_space,  spawn,          {.v = utilapps } },
   { MODKEY,                       XK_F2,     spawn,          {.v = downvol } },
   { MODKEY,                       XK_p,      spawn,          {.v = mutevol } },
   { MODKEY,                       XK_F3,     spawn,          {.v = upvol   } },

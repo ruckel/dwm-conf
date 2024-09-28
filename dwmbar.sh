@@ -1,7 +1,11 @@
 #!/bin/sh
 # Dependencies: xorg-xsetroot
 
- loop=true
+loop=true
+
+if [[ $1 == 'once' ]]; then
+loop=false
+fi
 
 run() {
 if [ $loop == 'true' ];then
@@ -49,6 +53,7 @@ DIR=$(dirname "$LOC")
 #. "$DIR/bar-functions/dwm_pulse.sh"
 #. "$DIR/bar-functions/dwm_vpn.sh"
 #. "$DIR/bar-functions/dwm_weather.sh"
+. "$DIR/bar-functions/dwm_text.sh"
 }
 
 
@@ -61,6 +66,7 @@ while true; do
 # dwm_transmission && echo transmission
   dwm_network_speed && echo networkspeed
   dwm_resources && echo resources
+  dwm_text && echo text
   echo with sleep time: $sleepi
   sleep $1
 done
@@ -76,7 +82,7 @@ done
 }
 
 setBar() {
-upperbar="  "
+upperbar="$(dwm_text)|"
 echo Running processes
 
 #upperbar="$upperbar${__DWM_BAR_NETWORKMANAGER__}" && echo " dwm_networkmanager"

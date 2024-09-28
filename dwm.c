@@ -251,11 +251,11 @@ static void (*handler[LASTEvent]) (XEvent *) = {
 	[DestroyNotify] = destroynotify,
 	/* [EnterNotify] = enternotify, */
 	[Expose] = expose,
-	[FocusIn] = focusin, /* KORVKORVKORV */
+	[FocusIn] = focusin, 
 	[KeyPress] = keypress,
 	[MappingNotify] = mappingnotify,
 	[MapRequest] = maprequest,
-	[MotionNotify] = motionnotify,
+	/* [MotionNotify] = motionnotify, */
 	[PropertyNotify] = propertynotify,
 	[UnmapNotify] = unmapnotify
 };
